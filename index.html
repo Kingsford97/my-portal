@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Multi-Portal System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        h2 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: #444;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 14px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            background: #f9f9f9;
+        }
+        
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 10px 0;
+        }
+        
+        button:hover {
+            background: #5a67d8;
+        }
+        
+        .btn-school {
+            background: #48bb78;
+        }
+        
+        .btn-farmers {
+            background: #38b2ac;
+        }
+        
+        .btn-back {
+            background: #a0aec0;
+        }
+        
+        .btn-logout {
+            background: #e53e3e;
+        }
+        
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .metric-card {
+            background: #f7fafc;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            margin: 10px 0;
+        }
+        
+        .metric-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background: #667eea;
+            color: white;
+        }
+        
+        .success {
+            background: #c6f6d5;
+            color: #22543d;
+            padding: 12px;
+            border-radius: 10px;
+            margin: 10px 0;
+        }
+        
+        .error {
+            background: #fed7d7;
+            color: #742a2a;
+            padding: 12px;
+            border-radius: 10px;
+            margin: 10px 0;
+        }
+        
+        .info {
+            background: #bee3f8;
+            color: #2c5282;
+            padding: 12px;
+            border-radius: 10px;
+            margin: 10px 0;
+        }
+        
+        hr {
+            margin: 20px 0;
+            border: none;
+            border-top: 1px solid #eee;
+        }
+        
+        .footer {
+            text-align: center;
+            color: white;
+            font-size: 12px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="app"></div>
+        <div class="footer">Multi-Portal System v1.0</div>
+    </div>
+
+    <script>
+        // Data storage
+        let users = {"kingsford": { password: "Kingsford@97", role: "admin" },
+            "admin": { password: "admin123", role: "admin" }
+        };
+        
+        let currentUser = null;
+        let currentPortal = null;
+        
+        // Helper functions
+        function saveData() {
+            localStorage.setItem("portal_users", JSON.stringify(users));
+        }
+        
+        function loadData() {
+            const saved = localStorage.getItem("portal_users");
+            if (saved) {
+                users = JSON.parse(saved);
+            }
+        }
+        
+        function render() {
+            const app = document.getElementById("app");
+            if (!currentUser) {
+                renderLogin(app);
+            } else if (!currentPortal) {
+                renderHome(app);
+            } else if (currentPortal === "school") {
+                renderSchool(app);
+            } else if (currentPortal === "farmers") {
+                renderFarmers(app);
+            }
+        }
+        
+        function renderLogin(container) {
+            container.innerHTML = `
+                <div class="card">
+                    <h1>🔐 Multi-Portal System</h1>
+                    <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                        <button id="loginTabBtn" style="flex:1; background:#667eea; margin:0">Login</button>
+                        <button id="registerTabBtn" style="flex:1; background:#a0aec0; margin:0">Register</button>
+                    </div>
+                    <div id="loginPanel">
+                        <input type="text" id="loginUsername" placeholder="Username">
+                        <input type="password" id="loginPassword" placeholder="Password">
+                        <button id="loginBtn">Login</button>
+                    </div>
+                    <div id="registerPanel" style="display:none;">
+                        <input type="text" id="regUsername" placeholder="Username">
+                        <input type="password" id="regPassword" placeholder="Password">
+                        <input type="password" id="regConfirm" placeholder="Confirm Password">
+                        <select id="regRole">
+                            <option value="user">User</option>
+                            <option value="teacher">Teacher</option>
+                            <option value="farmer">Farmer</option>
+                        </select>
+                        <button id="registerBtn">Register</button>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById("loginTabBtn").onclick = () => {
+                document.getElementById("loginPanel").style.display = "block";
+                document.getElementById("registerPanel").style.display = "none";
+                document.getElementById("loginTabBtn").style.background = "#667eea";
+                document.getElementById("registerTabBtn").style.background = "#a0aec0";
+            };
+            
+            document.getElementById("registerTabBtn").onclick = () => {
+                document.getElementById("loginPanel").style.display = "none";
+                document.getElementById("registerPanel").style.display = "block";
+                document.getElementById("registerTabBtn").style.background = "#667eea";
+                document.getElementById("loginTabBtn").style.background = "#a0aec0";
+            };
+            
+            document.getElementById("loginBtn").onclick = () => {
+                const username = document.getElementById("loginUsername").value;
+                const password = document.getElementById("loginPassword").value;
+                
+                if (users[username] && users[username].password === password) {
+                    currentUser = username;
+                    render();
+                } else {
+                    showError("Invalid username or password");
+                }
+            };
+            
+            document.getElementById("registerBtn").onclick = () => {
+                const username = document.getElementById("regUsername").value;
+                const password = document.getElementById("regPassword").value;
+                const confirm = document.getElementById("regConfirm").value;
+                const role = document.getElementById("regRole").value;
+                
+                if (!username || !password) {
+                    showError("Please fill all fields");
+                } else if (password !== confirm) {
+                    showError("Passwords don't match");
+                } else if (users[username]) {
+                    showError("Username already exists");
+                } else {
+                    users[username] = { password: password, role: role };
+                    saveData();
+                    showSuccess("Account created! Please login.");
+                    document.getElementById("loginTabBtn").click();
+                }
+            };
+        }
+        
+        function renderHome(container) {
+            container.innerHTML = `
+                <div class="card">
+                    <h1>🏠 Welcome, ${currentUser}!</h1>
+                    <hr>
+                    <div class="grid-2">
+                        <button id="schoolBtn" class="btn-school">🏫 School Portal</button>
+                        <button id="farmersBtn" class="btn-farmers">🌾 Farmers Portal</button>
+                    </div>
+                    <button id="logoutBtn" class="btn-logout">Logout</button>
+                </div>
+            `;
+            
+            document.getElementById("schoolBtn").onclick = () => {
+                currentPortal = "school";
+                render();
+            };
+            
+            document.getElementById("farmersBtn").onclick = () => {
+                currentPortal = "farmers";
+                render();
+            };
+            
+            document.getElementById("logoutBtn").onclick = () => {
+                currentUser = null;
+                currentPortal = null;
+                render();
+            };
+        }
+        
+        function renderSchool(container) {
+            container.innerHTML = `
+                <div class="card">
+                    <h1>🏫 School Portal</h1>
+                    <hr>
+                    <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                        <button id="dashBtn" style="flex:1; background:#667eea; margin:0">Dashboard</button>
+                        <button id="studentsBtn" style="flex:1; background:#48bb78; margin:0">Students</button>
+                        <button id="examsBtn" style="flex:1; background:#ed8936; margin:0">Exams</button>
+                    </div>
+                    <div id="schoolContent"></div>
+                    <button id="backBtn" class="btn-back">← Back</button>
+                </div>
+            `;
+            
+            let currentTab = "dashboard";
+            
+            function updateContent() {
+                const content = document.getElementById("schoolContent");
+                if (currentTab === "dashboard") {
+                    content.innerHTML = `
+                        <div class="grid-2">
+                            <div class="metric-card"><div class="metric-value">1,245</div><div class="metric-label">Students</div></div>
+                            <div class="metric-card"><div class="metric-value">78</div><div class="metric-label">Teachers</div></div>
+                            <div class="metric-card"><div class="metric-value">87%</div><div class="metric-label">Pass Rate</div></div>
+                            <div class="metric-card"><div class="metric-value">94%</div><div class="metric-label">Attendance</div></div>
+                        </div>
+                        <div class="info">📊 Attendance: 94% this month</div>
+                    `;
+                } else if (currentTab === "students") {
+                    content.innerHTML = `
+                        <table>
+                            <tr><th>Name</th><th>Class</th><th>Contact</th></tr><tr><td>Alice Johnson</td><td>Grade 5</td><td>+123456789</td></tr>
+                            <tr><td>Bob Smith</td><td>Grade 4</td><td>+123456788</td></tr>
+                            <tr><td>Charlie Brown</td><td>Grade 5</td><td>+123456787</td></tr>
+                            <tr><td>Diana Ross</td><td>Grade 3</td><td>+123456786</td></tr>
+                        </table>
+                        <button id="downloadStudents" style="background:#48bb78;">📎 Download CSV</button>
+                    `;
+                    const downloadBtn = document.getElementById("downloadStudents");
+                    if (downloadBtn) {
+                        downloadBtn.onclick = () => downloadCSV("students.csv", "Name,Class,Contact\nAlice Johnson,Grade 5,+123456789\nBob Smith,Grade 4,+123456788\nCharlie Brown,Grade 5,+123456787\nDiana Ross,Grade 3,+123456786");
+                    }
+                } else if (currentTab === "exams") {
+                    content.innerHTML = `
+                        <table>
+                            <tr><th>Student</th><th>Math</th><th>Science</th><th>English</th></tr>
+                            <tr><td>Alice</td><td>92</td><td>89</td><td>95</td></tr>
+                            <tr><td>Bob</td><td>78</td><td>85</td><td>80</td></tr>
+                            <tr><td>Charlie</td><td>88</td><td>91</td><td>87</td></tr>
+                            <tr><td>Diana</td><td>95</td><td>88</td><td>92</td></tr>
+                        </table>
+                        <div class="info">📈 Class Average: Math 88%, Science 88%, English 89%</div>
+                    `;
+                }
+            }
+            
+            document.getElementById("dashBtn").onclick = () => { currentTab = "dashboard"; updateContent(); };
+            document.getElementById("studentsBtn").onclick = () => { currentTab = "students"; updateContent(); };
+            document.getElementById("examsBtn").onclick = () => { currentTab = "exams"; updateContent(); };
+            document.getElementById("backBtn").onclick = () => { currentPortal = null; render(); };
+            
+            updateContent();
+        }
+        
+        function renderFarmers(container) {
+            container.innerHTML = `
+                <div class="card">
+                    <h1>🌾 Farmers Portal</h1>
+                    <hr>
+                    <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                        <button id="dashBtn" style="flex:1; background:#667eea; margin:0">Dashboard</button>
+                        <button id="cropsBtn" style="flex:1; background:#48bb78; margin:0">Crops</button>
+                        <button id="pricesBtn" style="flex:1; background:#ed8936; margin:0">Prices</button>
+                    </div>
+                    <div id="farmersContent"></div>
+                    <button id="backBtn" class="btn-back">← Back</button>
+                </div>
+            `;
+            
+            let currentTab = "dashboard";
+            
+            function updateContent() {
+                const content = document.getElementById("farmersContent");
+                if (currentTab === "dashboard") {
+                    content.innerHTML = `
+                        <div class="grid-2">
+                            <div class="metric-card"><div class="metric-value">5</div><div class="metric-label">Active Crops</div></div>
+                            <div class="metric-card"><div class="metric-value">12,450kg</div><div class="metric-label">Total Yield</div></div>
+                            <div class="metric-card"><div class="metric-value">$2.50</div><div class="metric-label">Avg Price/kg</div></div>
+                            <div class="metric-card"><div class="metric-value">$31k</div><div class="metric-label">Revenue</div></div>
+                        </div>
+                        <div class="info">🌱 This week's yield: 2,640 kg</div>
+                    `;
+                } else if (currentTab === "crops") {
+                    content.innerHTML = `
+                        <table><tr><th>Crop</th><th>Area (acres)</th><th>Status</th></tr>
+                            <tr><td>Maize</td><td>120</td><td>🌱 Growing</td></tr>
+                            <tr><td>Wheat</td><td>85</td><td>🌱 Growing</td></tr>
+                            <tr><td>Rice</td><td>95</td><td>🌱 Growing</td></tr>
+                            <tr><td>Tomatoes</td><td>40</td><td>🌻 Ready</td></tr>
+                        </table>
+                        <button id="downloadCrops" style="background:#48bb78;">📎 Download CSV</button>
+                    `;
+                    const downloadBtn = document.getElementById("downloadCrops");
+                    if (downloadBtn) {
+                        downloadBtn.onclick = () => downloadCSV("crops.csv", "Crop,Area,Status\nMaize,120,Growing\nWheat,85,Growing\nRice,95,Growing\nTomatoes,40,Ready");
+                    }
+                } else if (currentTab === "prices") {
+                    content.innerHTML = `
+                        <table>
+                            <tr><th>Crop</th><th>Price/kg</th><th>Trend</th></tr>
+                            <tr><td>Maize</td><td>$2.80</td><td>📈 +5%</td></tr>
+                            <tr><td>Wheat</td><td>$3.20</td><td>📈 +2%</td></tr>
+                            <tr><td>Rice</td><td>$4.50</td><td>📉 -3%</td></tr>
+                            <tr><td>Tomatoes</td><td>$1.80</td><td>📈 +8%</td></tr>
+                        </table>
+                        <div class="info">💰 Best price today: Rice at $4.50/kg</div>
+                    `;
+                }
+            }
+            
+            document.getElementById("dashBtn").onclick = () => { currentTab = "dashboard"; updateContent(); };
+            document.getElementById("cropsBtn").onclick = () => { currentTab = "crops"; updateContent(); };
+            document.getElementById("pricesBtn").onclick = () => { currentTab = "prices"; updateContent(); };
+            document.getElementById("backBtn").onclick = () => { currentPortal = null; render(); };
+            
+            updateContent();
+        }
+        
+        function showError(msg) {
+            const app = document.getElementById("app");
+            const errorDiv = document.createElement("div");
+            errorDiv.className = "error";
+            errorDiv.innerHTML = msg;
+            app.insertBefore(errorDiv, app.firstChild);
+            setTimeout(() => errorDiv.remove(), 3000);
+        }
+        
+        function showSuccess(msg) {
+            const app = document.getElementById("app");
+            const successDiv = document.createElement("div");
+            successDiv.className = "success";
+            successDiv.innerHTML = msg;
+            app.insertBefore(successDiv, app.firstChild);
+            setTimeout(() => successDiv.remove(), 3000);
+        }
+        
+        function downloadCSV(filename, data) {
+            const blob = new Blob([data], { type: "text/csv" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = filename;
+            link.click();
+            URL.revokeObjectURL(link.href);
+        }
+        
+        // Initialize
+        loadData();
+        render();
+    </script>
+</body>
+</html>
