@@ -1,0 +1,70 @@
+} else if (currentTab === "crops") {
+                    content.innerHTML = `
+                        <table>
+                            <tr><th>Crop</th><th>Area (acres)</th><th>Status</th></tr>
+                            <tr><td>Maize</td><td>120</td><td>🌱 Growing</td></tr>
+                            <tr><td>Wheat</td><td>85</td><td>🌱 Growing</td></tr>
+                            <tr><td>Rice</td><td>95</td><td>🌱 Growing</td></tr>
+                            <tr><td>Tomatoes</td><td>40</td><td>🌻 Ready</td></tr>
+                        </table>
+                        <button id="downloadCrops" style="background:#48bb78;">📎 Download CSV</button>
+                    `;
+                    const downloadBtn = document.getElementById("downloadCrops");
+                    if (downloadBtn) {
+                        downloadBtn.onclick = () => downloadCSV("crops.csv", "Crop,Area,Status\nMaize,120,Growing\nWheat,85,Growing\nRice,95,Growing\nTomatoes,40,Ready");
+                    }
+                } else if (currentTab === "prices") {
+                    content.innerHTML = `
+                        <table>
+                            <tr><th>Crop</th><th>Price/kg</th><th>Trend</th></tr>
+                            <tr><td>Maize</td><td>$2.80</td><td>📈 +5%</td></tr>
+                            <tr><td>Wheat</td><td>$3.20</td><td>📈 +2%</td></tr>
+                            <tr><td>Rice</td><td>$4.50</td><td>📉 -3%</td></tr>
+                            <tr><td>Tomatoes</td><td>$1.80</td><td>📈 +8%</td></tr>
+                        </table>
+                        <div class="info">💰 Best price today: Rice at $4.50/kg</div>
+                    `;
+                }
+            }
+            
+            document.getElementById("dashBtn").onclick = () => { currentTab = "dashboard"; updateContent(); };
+            document.getElementById("cropsBtn").onclick = () => { currentTab = "crops"; updateContent(); };
+            document.getElementById("pricesBtn").onclick = () => { currentTab = "prices"; updateContent(); };
+            document.getElementById("backBtn").onclick = () => { currentPortal = null; render(); };
+            
+            updateContent();
+        }
+        
+        function showError(msg) {
+            const app = document.getElementById("app");
+            const errorDiv = document.createElement("div");
+            errorDiv.className = "error";
+            errorDiv.innerHTML = msg;
+            app.insertBefore(errorDiv, app.firstChild);
+            setTimeout(() => errorDiv.remove(), 3000);
+        }
+        
+        function showSuccess(msg) {
+            const app = document.getElementById("app");
+            const successDiv = document.createElement("div");
+            successDiv.className = "success";
+            successDiv.innerHTML = msg;
+            app.insertBefore(successDiv, app.firstChild);
+            setTimeout(() => successDiv.remove(), 3000);
+        }
+        
+        function downloadCSV(filename, data) {
+            const blob = new Blob([data], { type: "text/csv" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = filename;
+            link.click();
+            URL.revokeObjectURL(link.href);
+        }
+        
+        // Initialize
+        loadData();
+        render();
+    </script>
+</body>
+</html>
