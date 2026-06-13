@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Portal System - Ghana</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            margin: 0;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: #333;
+            text-align: center;
+        }
+        input, select {
+            width: 100%;
+            padding: 14px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 10px 0;
+        }
+        .btn-student { background: #9f7aea; }
+        .btn-parent { background: #ed8936; }
+        .btn-teacher { background: #48bb78; }
+        .btn-farmer { background: #38b2ac; }
+        .btn-logout { background: #a0aec0; }
+        .info {
+            background: #bee3f8;
+            padding: 12px;
+            border-radius: 10px;
+            margin: 10px 0;
+            font-size: 14px;
+        }
+        .success { background: #c6f6d5; padding: 12px; border-radius: 10px; margin: 10px 0; color: #22543d; }
+        .error { background: #fed7d7; padding: 12px; border-radius: 10px; margin: 10px 0; color: #742a2a; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .metric-card { background: #f7fafc; padding: 15px; border-radius: 12px; text-align: center; }
+        .metric-value { font-size: 28px; font-weight: bold; color: #667eea; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background: #667eea; color: white; }
+        .footer { text-align: center; color: white; font-size: 12px; margin-top: 20px; }
+        hr { margin: 15px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="app"></div>
+        <div class="footer">Multi-Portal System - Ghana</div>
+    </div>
+
+    <script>
+        // USERS DATABASE
+        let users = {
+            "kwame": { password: "123456", role: "student", name: "Kwame Asante", fees: 3500, paid: false, results: { Math: 85, Science: 78, English: 82, Computing: 90 } },
+            "adwoa": { password: "123456", role: "student", name: "Adwoa Mensah", fees: 1200, paid: false, results: { Math: 72, Science: 68, English: 75, Physics: 65 } },
+            "mr.ofori": { password: "123456", role: "parent", childName: "Abena Ofori", childClass: "Primary 4", childResults: { Math: 88, English: 85, Science: 80 } },
+            "mr.boateng": { password: "123456", role: "parent", childName: "Esi Boateng", childClass: "Primary 2", childResults: { Math: 92, English: 88, Science: 85 } },
+            "teacher1": { password: "123456", role: "teacher" },
+            "farmer1": { password: "123456", role: "farmer" },
+            "kingsford": { password: "Kingsford@97", role: "admin" }
+        };
+        
+        let currentUser = null;
+        let currentPortal = null;
+        
+        function render() {
+            const app = document.getElementById("app");
+            if (!currentUser) {
+                renderLogin(app);
+            } else if (!currentPortal) {
+                renderHome(app);} else if (currentPortal === "student") {
+                renderStudentPortal(app);
+            } else if (currentPortal === "parent") {
+                renderParentPortal(app);
+            } else if (currentPortal === "teacher") {
+                renderTeacherPortal(app);
+            } else if (currentPortal === "farmer") {
+                renderFarmerPortal(app);
+            } else if (currentPortal === "admin") {
+                renderAdminPortal(app);
+            }
+        }
+        
+        function renderLogin(container) {
+            container.innerHTML = `
+                <div class="card">
+                    <h1>🇬🇭 Multi-Portal System</h1>
+                    <p style="text-align:center; color:#666;">Students | Parents | Teachers | Farmers</p>
+                    <input type="text" id="username" placeholder="Username">
+                    <input type="password" id="password" placeholder="Password">
+                    <button id="loginBtn">Login</button>
+                    <div class="info">📞 <strong>Test Logins:</strong></div>
+                    <div class="info">🎓 Student: kwame / 123456</div>
+                    <div class="info">👨‍👩‍👧 Parent: mr.ofori / 123456</div>
+                    <div class="info">👨‍🏫 Teacher: teacher1 / 123456</div>
+                    <div class="info">🌾 Farmer: farmer1 / 123456</div>
+                    <div class="info">👑 Admin: kingsford / Kingsford@97</div>
+                </div>
+            `;
+            
+            document.getElementById("loginBtn").onclick = () => {
+                const user = document.getElementById("username").value;
+                const pass = document.getElementById("password").value;
+                if (users[user] && users[user].password === pass) {
+                    currentUser = user;
+                    render();
+                } else {
+                    alert("Invalid username or password");
+                }
+            };
+        }
+        
+        function renderHome(container) {
+            const role = users[currentUser].role;
+            let buttons = '';
+            
+            buttons += '<button id="studentBtn" class="btn-student">🎓 Student Portal</button>';
+            buttons += '<button id="parentBtn" class="btn-parent">👨‍👩‍👧 Parent Portal</button>';
+            buttons += '<button id="teacherBtn" class="btn-teacher">👨‍🏫 Teacher Portal</button>';
+            buttons += '<button id="farmerBtn" class="btn-farmer">🌾 Farmers Portal</button>';
+            
+            container.innerHTML = `
+                <div class="card">
+                    <h1>🇬🇭 Welcome, ${currentUser}!</h1>
+                    <p style="text-align:center;">Role: <strong>${role}</strong></p>
+                    <hr>
+                    ${buttons}
+                    <button id="logoutBtn" class="btn-logout">Logout</button>
+                </div>
+            `;
+            
+            document.getElementById("studentBtn").onclick = () => { currentPortal = "student"; render(); };
+            document.getElementById("parentBtn").onclick = () => { currentPortal = "parent"; render(); };
+            document.getElementById("teacherBtn").onclick = () => { currentPortal = "teacher"; render(); };
+            document.getElementById("farmerBtn").onclick = () => { currentPortal = "farmer"; render(); };
+            document.getElementById("logoutBtn").onclick = () => { currentUser = null; currentPortal = null; render(); };
+        }
+        
+        function renderStudentPortal(container) {
+            const userData = users[currentUser];
+            const results = userData.results || {};
+            
+            container.innerHTML = `
+                <div class="card">
+                    <h1>🎓 Student Portal</h1>
+                    <p><strong>${userData.name}</strong></p>
+                    <div class="grid-2">
+                        <div class="metric-card"><div class="metric-value">GHS ${userData.fees}</div><div class="metric-label">School Fees</div></div><div class="metric-card"><div class="metric-value">${userData.paid ? '✅ Paid' : '❌ Pending'}</div><div class="metric-label">Status</div></div>
+                    </div>
+                    
+                    <h3>💰 Pay Fees</h3>
+                    <select id="bank">
+                        <option>GCB Bank</option><option>Ecobank</option><option>Stanbic Bank</option>
+                        <option>Absa Bank</option><option>Access Bank</option><option>Fidelity Bank</option>
+                    </select>
+                    <input type="text" id="ref" placeholder="Payment Reference">
+                    <button id="payBtn">Confirm Payment</button>
+                    
+                    <h3>📊 Your Results</h3>
+                    <table>
+                        <tr><th>Subject</th><th>Score</th></tr>
+                        ${Object.entries(results).map(([sub, score]) => `<tr><td>${sub}</td><td>${score}%</td></tr>`).join('')}
+                    </table>
+                    
+                    <h3>📚 Register Course</h3>
+                    <select id="course">
+                        <option>Mathematics</option><option>English</option><option>Science</option>
+                        <option>Computing</option><option>Physics</option><option>Chemistry</option>
+                    </select>
+                    <button id="regBtn">Register</button>
+                    
+                    <h3>📝 Upload Assignment</h3>
+                    <input type="text" id="assignTitle" placeholder="Assignment Title">
+                    <textarea id="assignContent" rows="3" placeholder="Assignment details" style="width:100%; padding:10px;"></textarea>
+                    <button id="uploadBtn">Upload</button>
+                    
+                    <h3>📖 Past Questions</h3>
+                    <select id="level"><option>Primary</option><option>JHS</option><option>SHS</option><option>University</option></select>
+                    <input type="text" id="subject" placeholder="Subject">
+                    <button id="searchBtn">Search</button>
+                    <div id="pastResults"></div>
+                    
+                    <button id="backBtn" style="background:#a0aec0;">← Back</button>
+                </div>
+            `;
+            
+            document.getElementById("payBtn").onclick = () => {
+                const ref = document.getElementById("ref").value;
+                if (ref) {
+                    userData.paid = true;
+                    alert("Payment confirmed! Reference: " + ref);
+                    renderStudentPortal(container);
+                } else alert("Enter payment reference");
+            };
+            
+            document.getElementById("regBtn").onclick = () => {
+                alert("Course registered: " + document.getElementById("course").value);
+            };
+            
+            document.getElementById("uploadBtn").onclick = () => {
+                const title = document.getElementById("assignTitle").value;
+                if (title) {
+                    alert("Assignment '" + title + "' uploaded!");
+                } else alert("Enter assignment title");
+            };
+            
+            document.getElementById("searchBtn").onclick = () => {
+                const level = document.getElementById("level").value;
+                const subject = document.getElementById("subject").value;
+                document.getElementById("pastResults").innerHTML = <div class="success">📖 Sample past question for ${level} ${subject}: What is 2+2? Answer: 4</div>;
+            };
+            
+            document.getElementById("backBtn").onclick = () => { currentPortal = null; render(); };
+        }
+        
+        function renderParentPortal(container) {
+            const userData = users[currentUser];
+            const results = userData.childResults || {};
+            
+            container.innerHTML = `
+                <div class="card">
+                    <h1>👨‍👩‍👧 Parent Portal</h1>
+                    <p><strong>Child:</strong> ${userData.childName}</p><p><strong>Class:</strong> ${userData.childClass}</p>
+                    <h3>📊 Child's Results</h3>
+                    <table>
+                        <tr><th>Subject</th><th>Score</th></tr>
+                        ${Object.entries(results).map(([sub, score]) => `<tr><td>${sub}</td><td>${score}%</td></tr>`).join('')}
+                    </table>
+                    <button id="backBtn" style="background:#a0aec0;">← Back</button>
+                </div>
+            `;
+            document.getElementById("backBtn").onclick = () => { currentPortal = null; render(); };
+        }
+        
+        function renderTeacherPortal(container) {
+            container.innerHTML = `
+                <div class="card">
+                    <h1>👨‍🏫 Teacher Portal</h1>
+                    <div class="info">📚 WAEC Approved Resources</div>
+                    <div class="info">📝 Download Lesson Plans</div>
+                    <div class="info">📊 Student Assessment Tools</div>
+                    <div class="info">✅ GES Curriculum Materials</div>
+                    <button id="backBtn" style="background:#a0aec0;">← Back</button>
+                </div>
+            `;
+            document.getElementById("backBtn").onclick = () => { currentPortal = null; render(); };
+        }
+        
+        function renderFarmerPortal(container) {
+            container.innerHTML = `
+                <div class="card">
+                    <h1>🌾 Farmers Portal</h1>
+                    <h3>💰 Crop Prices (GHS/kg)</h3>
+                    <table>
+                        <tr><th>Crop</th><th>Price/kg</th></tr>
+                        <tr><td>Maize</td><td>GHS 3.50</td></tr>
+                        <tr><td>Cassava</td><td>GHS 2.00</td></tr>
+                        <tr><td>Yam</td><td>GHS 8.00</td></tr>
+                        <tr><td>Cocoa</td><td>GHS 12.00</td></tr>
+                        <tr><td>Rice</td><td>GHS 6.50</td></tr>
+                    </table>
+                    <h3>🌤 Weather by Region</h3>
+                    <div class="info">📍 Accra: 32°C ☀️ Sunny</div>
+                    <div class="info">📍 Kumasi: 28°C ⛅️ Cloudy</div>
+                    <div class="info">📍 Tamale: 35°C ☀️ Hot</div>
+                    <div class="info">📍 Takoradi: 30°C 🌧 Rainy</div>
+                    <h3>🌱 My Crops</h3>
+                    <input type="text" id="cropName" placeholder="Crop name">
+                    <input type="number" id="weight" placeholder="Weight (kg)">
+                    <button id="addBtn">Add Crop</button>
+                    <div id="cropList"></div>
+                    <button id="backBtn" style="background:#a0aec0;">← Back</button>
+                </div>
+            `;
+            
+            let myCrops = [];
+            document.getElementById("addBtn").onclick = () => {
+                const name = document.getElementById("cropName").value;
+                const weight = document.getElementById("weight").value;
+                if (name && weight) {
+                    myCrops.push(`${name}: ${weight}kg`);
+                    document.getElementById("cropList").innerHTML = myCrops.map(c => `<div class="info">🌾 ${c}</div>`).join('');
+                    document.getElementById("cropName").value = "";
+                    document.getElementById("weight").value = "";
+                }
+            };
+            document.getElementById("backBtn").onclick = () => { currentPortal = null; render(); };
+        }
+        
+        function renderAdminPortal(container) {
+            container.innerHTML = `
+                <div class="card">
+                    <h1>👑 Admin Portal</h1>
+                    <div class="info">📊 Total Users: ${Object.keys(users).length}</div>
+                    <div class="info">🎓 Students: ${Object.values(users).filter(u => u.role === 'student').length}</div>
+                    <div class="info">👨‍👩‍👧 Parents: ${Object.values(users).filter(u => u.role === 'parent').length}</div>
+                    <div class="info">👨‍🏫 Teachers: ${Object.values(users).filter(u => u.role === 'teacher').length}</div>
+                    <div class="info">🌾 Farmers: ${Object.values(users).filter(u => u.role === 'farmer').length}</div>
+                    <button id="backBtn" style="background:#a0aec0;">← Back</button>
+                </div>
+            `;
+            document.getElementById("backBtn").onclick = () => { currentPortal = null; render(); };
+        }
+        
+        render();
+    </script>
+</body>
+</html>
