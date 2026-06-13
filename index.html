@@ -1,474 +1,380 @@
-<!DOCTYPE html>
+[13/06/2026 12:16 pm] Kingsford Okyere: <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>Multi-Portal System</title>
+    <title>Multi-Portal System - Ghana</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 20px;
         }
-        
-        .container {
-            max-width: 500px;
-            margin: 0 auto;
-        }
-        
-        .card {
-            background: white;
-            border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-        }
-        
-        h1 {
-            font-size: 28px;
-            margin-bottom: 10px;
-            color: #333;
-        }
-        
-        h2 {
-            font-size: 22px;
-            margin-bottom: 15px;
-            color: #444;
-        }
-        
-        input, select {
-            width: 100%;
-            padding: 14px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            font-size: 16px;
-            background: #f9f9f9;
-        }
-        
-        button {
-            width: 100%;
-            padding: 14px;
-            background: #667eea;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            margin: 10px 0;
-        }
-        
-        button:hover {
-            background: #5a67d8;
-        }
-        
-        .btn-school {
-            background: #48bb78;
-        }
-        
-        .btn-farmers {
-            background: #38b2ac;
-        }
-        
-        .btn-back {
-            background: #a0aec0;
-        }
-        
-        .btn-logout {
-            background: #e53e3e;
-        }
-        
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-        
-        .metric-card {
-            background: #f7fafc;
-            padding: 15px;
-            border-radius: 12px;
-            text-align: center;
-            margin: 10px 0;
-        }
-        
-        .metric-value {
-            font-size: 28px;
-            font-weight: bold;
-            color: #667eea;
-        }
-        
-        .metric-label {
-            font-size: 14px;
-            color: #666;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 15px 0;
-        }
-        
-        th, td {
-            padding: 10px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-        
-        th {
-            background: #667eea;
-            color: white;
-        }
-        
-        .success {
-            background: #c6f6d5;
-            color: #22543d;
-            padding: 12px;
-            border-radius: 10px;
-            margin: 10px 0;
-        }
-        
-        .error {
-            background: #fed7d7;
-            color: #742a2a;
-            padding: 12px;
-            border-radius: 10px;
-            margin: 10px 0;
-        }
-        
-        .info {
-            background: #bee3f8;
-            color: #2c5282;
-            padding: 12px;
-            border-radius: 10px;
-            margin: 10px 0;
-        }
-        
-        hr {
-            margin: 20px 0;
-            border: none;
-            border-top: 1px solid #eee;
-        }
-        
-        .footer {
-            text-align: center;
-            color: white;
-            font-size: 12px;
-            margin-top: 20px;
-        }
+        .container { max-width: 500px; margin: 0 auto; }
+        .card { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
+        h1 { font-size: 28px; margin-bottom: 10px; color: #333; }
+        h2 { font-size: 22px; margin-bottom: 15px; color: #444; }
+        h3 { font-size: 18px; margin-bottom: 10px; color: #555; }
+        input, select, textarea { width: 100%; padding: 14px; margin: 10px 0; border: 1px solid #ddd; border-radius: 10px; font-size: 16px; background: #f9f9f9; }
+        button { width: 100%; padding: 14px; background: #667eea; color: white; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; margin: 10px 0; }
+        button:hover { background: #5a67d8; }
+        .btn-school { background: #48bb78; }
+        .btn-farmers { background: #38b2ac; }
+        .btn-student { background: #9f7aea; }
+        .btn-parent { background: #ed8936; }
+        .btn-back { background: #a0aec0; }
+        .btn-logout { background: #e53e3e; }
+        .btn-edit { background: #ed8936; }
+        .btn-delete { background: #e53e3e; padding: 8px; font-size: 14px; }
+        .btn-chat { background: #4a5568; position: fixed; bottom: 20px; right: 20px; width: auto; border-radius: 50px; padding: 12px 20px; margin: 0; z-index: 1000; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .metric-card { background: #f7fafc; padding: 15px; border-radius: 12px; text-align: center; margin: 10px 0; }
+        .metric-value { font-size: 28px; font-weight: bold; color: #667eea; }
+        .metric-label { font-size: 14px; color: #666; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background: #667eea; color: white; }
+        .success { background: #c6f6d5; color: #22543d; padding: 12px; border-radius: 10px; margin: 10px 0; }
+        .error { background: #fed7d7; color: #742a2a; padding: 12px; border-radius: 10px; margin: 10px 0; }
+        .info { background: #bee3f8; color: #2c5282; padding: 12px; border-radius: 10px; margin: 10px 0; }
+        .warning { background: #feebc8; color: #7c2d12; padding: 12px; border-radius: 10px; margin: 10px 0; }
+        hr { margin: 20px 0; border: none; border-top: 1px solid #eee; }
+        .footer { text-align: center; color: white; font-size: 12px; margin-top: 20px; }
+        .edit-form { background: #f7fafc; padding: 15px; border-radius: 12px; margin: 15px 0; }
+        .crop-card, .assignment-card, .course-card { background: #f7fafc; padding: 15px; border-radius: 12px; margin: 10px 0; border-left: 4px solid #48bb78; }
+        .chat-window { position: fixed; bottom: 80px; right: 20px; width: 320px; height: 450px; background: white; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); display: none; flex-direction: column; z-index: 1000; overflow: hidden; }
+        .chat-header { background: #667eea; color: white; padding: 15px; font-weight: bold; display: flex; justify-content: space-between; }
+        .chat-messages { flex: 1; padding: 15px; overflow-y: auto; background: #f7fafc; }
+        .chat-input { display: flex; padding: 10px; background: white; border-top: 1px solid #ddd; }
+        .chat-input input { flex: 1; margin: 0; margin-right: 10px; }
+        .chat-input button { width: auto; margin: 0; padding: 10px 20px; }
+        .
+[13/06/2026 12:16 pm] Kingsford Okyere: message { margin-bottom: 10px; padding: 8px 12px; border-radius: 15px; max-width: 85%; }
+        .user-message { background: #667eea; color: white; align-self: flex-end; margin-left: auto; }
+        .bot-message { background: #e2e8f0; color: #333; }
     </style>
 </head>
 <body>
     <div class="container">
         <div id="app"></div>
-        <div class="footer">Multi-Portal System v1.0</div>
+        <div class="footer">Multi-Portal System - Ghana v4.0</div>
+    </div>
+    
+    <button id="chatButton" class="btn-chat">💬 AI Assistant</button>
+    <div id="chatWindow" class="chat-window">
+        <div class="chat-header"><span>🤖 EduFarm AI Assistant</span><button id="closeChat" style="background:none;border:none;color:white;font-size:20px;margin:0;padding:0;width:auto;">✕</button></div>
+        <div id="chatMessages" class="chat-messages"><div class="message bot-message">Hello! Ask me about school fees, results, courses, assignments, past questions, crop prices, weather in Ghana, or anything!</div></div>
+        <div class="chat-input"><input type="text" id="chatInput" placeholder="Ask me anything..."><button id="sendChat">Send</button></div>
     </div>
 
     <script>
-        // Data storage
-        let users = {"kingsford": { password: "Kingsford@97", role: "admin" },
-            "admin": { password: "admin123", role: "admin" }
+        // Banks
+        let ghanaBanks = ["GCB Bank", "Ecobank Ghana", "Absa Bank", "Stanbic Bank", "Access Bank", "Fidelity Bank", "Cal Bank", "Republic Bank", "ADB Bank"];
+        
+        // Students
+        let students = [
+            { id: "STU001", name: "Kwame Asante", level: "University", program: "Computer Science", fees: 3500, paid: false, parentName: "Mr. Asante", parentContact: "0244123456" },
+            { id: "STU002", name: "Adwoa Mensah", level: "SHS 3", program: "General Science", fees: 1200, paid: false, parentName: "Mrs. Mensah", parentContact: "0244123457" },
+            { id: "STU003", name: "Abena Ofori", level: "Primary 4", program: "Basic", fees: 500, paid: false, parentName: "Mr. Ofori", parentContact: "0244123458" },
+            { id: "STU004", name: "Kofi Annan", level: "JHS 2", program: "Basic", fees: 800, paid: false, parentName: "Mrs. Annan", parentContact: "0244123459" }
+        ];
+        
+        // Results
+        let studentResults = {
+            "STU001": { math: 85, science: 78, english: 82, computing: 90, status: "Pass" },
+            "STU002": { math: 72, science: 68, english: 75, chemistry: 70, physics: 65, status: "Pass" },
+            "STU003": { math: 88, english: 85, science: 80, social: 82, status: "Pass" },
+            "STU004": { math: 65, english: 70, science: 68, rme: 75, status: "Pass" }
+        };
+        
+        // Courses
+        let availableCourses = ["Mathematics", "English", "Science", "Computing", "Physics", "Chemistry", "Biology", "History", "Geography", "Economics"];
+        let courseRegistrations = [];
+        let assignments = [];
+        
+        // Past Questions
+        let pastQuestions = [
+            { level: "Primary", subject: "Math", year: 2023, question: "What is 25 × 4?", answer: "100" },
+            { level: "JHS", subject: "Science", year: 2023, question: "What is photosynthesis?", answer: "Process plants make food" },
+            { level: "SHS", subject: "Physics", year: 2023, question: "State Newton's second law", answer: "F = ma" },
+            { level: "University", subject: "Computer Science", year: 2023, question: "What is an algorithm?", answer: "Step-by-step procedure" }
+        ];
+        
+        // Parents (Primary 1-6 only)
+        let parentWards = [
+            { parentName: "Mr. Ofori", childId: "STU003", childName: "Abena Ofori", level: "Primary 4" },
+            { parentName: "Mr. Boateng", childId: "STU005", childName: "Esi Boateng", level: "Primary 2" }
+        ];
+        
+        // Ghana Crops
+        let ghanaCrops = [
+            { name: "Maize", pricePerKg: 3.50, region: "All Regions" },
+            { name: "Cassava", pricePerKg: 2.00, region: "All Regions" },
+            { name: "Yam", pricePerKg: 8.00, region: "Northern" },
+            { name: "Cocoa", pricePerKg: 12.00, region: "Western" },
+            { name: "Rice", pricePerKg: 6.50, region: "Northern" }
+        ];
+        let farmerCrops = [];
+[13/06/2026 12:16 pm] Kingsford Okyere: // Ghana Weather
+        let ghanaWeather = {
+            "Greater Accra": "32°C ☀️ Sunny", "Ashanti": "28°C ⛅️ Cloudy", "Northern": "35°C ☀️ Hot", "Western": "30°C 🌧 Rainy", "Central": "29°C 🌤 Mild"
+        };
+        
+        // Users
+        let users = {
+            "kingsford": { password: "Kingsford@97", role: "admin" },
+            "kwame": { password: "123456", role: "student", studentId: "STU001" },
+            "adwoa": { password: "123456", role: "student", studentId: "STU002" },
+            "mr.ofori": { password: "123456", role: "parent" },
+            "mr.boateng": { password: "123456", role: "parent" }
         };
         
         let currentUser = null;
         let currentPortal = null;
+        let editMode = false;
+        const MOMO_NUMBER = "0597738973";
         
-        // Helper functions
         function saveData() {
             localStorage.setItem("portal_users", JSON.stringify(users));
+            localStorage.setItem("portal_students", JSON.stringify(students));
+            localStorage.setItem("portal_courses", JSON.stringify(courseRegistrations));
+            localStorage.setItem("portal_assignments", JSON.stringify(assignments));
+            localStorage.setItem("farmer_crops", JSON.stringify(farmerCrops));
         }
         
         function loadData() {
             const saved = localStorage.getItem("portal_users");
-            if (saved) {
-                users = JSON.parse(saved);
-            }
+            if (saved) users = JSON.parse(saved);
+        }
+        
+        // AI Chatbot
+        function getBotResponse(message) {
+            const msg = message.toLowerCase();
+            if (msg.includes("fee")) return "💰 School fees can be paid via: GCB Bank, Ecobank, Stanbic, Absa, Access, Fidelity, Cal Bank, Republic Bank, ADB Bank. Momo: " + MOMO_NUMBER;
+            if (msg.includes("result")) return "📊 Login as Student to check results. Parents of Primary kids can also check results.";
+            if (msg.includes("course")) return "📚 Students can register: Mathematics, English, Science, Computing, Physics, Chemistry, Biology, History, Geography, Economics.";
+            if (msg.includes("assignment")) return "📝 Upload assignments in Student Portal. Teachers will review and grade.";
+            if (msg.includes("past question")) return "📖 Search past questions by level (Primary, JHS, SHS, University) and subject.";
+            if (msg.includes("crop") || msg.includes("price")) return "🌾 Crop prices: Maize GHS 3.50/kg, Cassava GHS 2.00/kg, Yam GHS 8.00/kg, Cocoa GHS 12.00/kg, Rice GHS 6.50/kg.";
+            if (msg.includes("weather")) return "🌤 Weather: Accra 32°C Sunny, Kumasi 28°C Cloudy, Tamale 35°C Hot, Takoradi 30°C Rainy.";
+            return "🤖 Ask me about: School Fees, Results, Courses, Assignments, Past Questions, Crop Prices, Weather, or Admin Access.";
+        }
+        
+        function initChat() {
+            document.getElementById("chatButton").onclick = () => {
+                document.getElementById("chatWindow").style.display = "flex";
+                document.getElementById("chatButton").style.display = "none";
+            };
+            document.getElementById("closeChat").onclick = () => {
+                document.getElementById("chatWindow").style.display = "none";
+                document.getElementById("chatButton").style.display = "block";
+            };
+            document.getElementById("sendChat").onclick = () => {
+                const input = document.getElementById("chatInput");
+                const question = input.value.trim();
+                if (!question) return;
+                const messages = document.getElementById("chatMessages");
+                messages.innerHTML += <div class="message user-message">${question}</div>;
+                input.value = "";
+                setTimeout(() => {
+                    const answer = getBotResponse(question);
+                    messages.innerHTML += <div class="message bot-message">${answer}</div>;
+                    messages.scrollTop = messages.scrollHeight;
+                }, 500);
+            };
         }
         
         function render() {
-            const app = document.getElementById("app");
-            if (!currentUser) {
-                renderLogin(app);
-            } else if (!currentPortal) {
-                renderHome(app);
-            } else if (currentPortal === "school") {
-                renderSchool(app);
-            } else if (currentPortal === "farmers") {
-                renderFarmers(app);
-            }
+            const app = document.
+[13/06/2026 12:16 pm] Kingsford Okyere: getElementById("app");
+            if (!currentUser) renderLogin(app);
+            else if (!currentPortal) renderHome(app);
+            else if (currentPortal === "student") renderStudentPortal(app);
+            else if (currentPortal === "parent") renderParentPortal(app);
+            else if (currentPortal === "school") renderSchoolPortal(app);
+            else if (currentPortal === "farmers") renderFarmersPortal(app);
+            else renderAccessDenied(app);
         }
         
         function renderLogin(container) {
             container.innerHTML = `
                 <div class="card">
-                    <h1>🔐 Multi-Portal System</h1>
-                    <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-                        <button id="loginTabBtn" style="flex:1; background:#667eea; margin:0">Login</button>
-                        <button id="registerTabBtn" style="flex:1; background:#a0aec0; margin:0">Register</button>
+                    <h1>🇬🇭 Multi-Portal System</h1>
+                    <p style="color:#666">Students | Parents | Teachers | Farmers</p>
+                    <div style="display:flex; gap:10px; margin:20px 0">
+                        <button id="loginTabBtn" style="flex:1">Login</button>
+                        <button id="registerTabBtn" style="flex:1; background:#a0aec0">Register</button>
                     </div>
                     <div id="loginPanel">
                         <input type="text" id="loginUsername" placeholder="Username">
                         <input type="password" id="loginPassword" placeholder="Password">
                         <button id="loginBtn">Login</button>
                     </div>
-                    <div id="registerPanel" style="display:none;">
+                    <div id="registerPanel" style="display:none">
                         <input type="text" id="regUsername" placeholder="Username">
                         <input type="password" id="regPassword" placeholder="Password">
                         <input type="password" id="regConfirm" placeholder="Confirm Password">
                         <select id="regRole">
-                            <option value="user">User</option>
-                            <option value="teacher">Teacher</option>
-                            <option value="farmer">Farmer</option>
+                            <option value="student">🎓 Student</option>
+                            <option value="parent">👨‍👩‍👧 Parent</option>
+                            <option value="teacher">👨‍🏫 Teacher</option>
+                            <option value="farmer">🌾 Farmer</option>
                         </select>
                         <button id="registerBtn">Register</button>
                     </div>
+                    <div class="info">📞 Admin Access: Send GHS 50 to ${MOMO_NUMBER}</div>
                 </div>
             `;
-            
             document.getElementById("loginTabBtn").onclick = () => {
                 document.getElementById("loginPanel").style.display = "block";
                 document.getElementById("registerPanel").style.display = "none";
                 document.getElementById("loginTabBtn").style.background = "#667eea";
                 document.getElementById("registerTabBtn").style.background = "#a0aec0";
             };
-            
             document.getElementById("registerTabBtn").onclick = () => {
                 document.getElementById("loginPanel").style.display = "none";
                 document.getElementById("registerPanel").style.display = "block";
                 document.getElementById("registerTabBtn").style.background = "#667eea";
                 document.getElementById("loginTabBtn").style.background = "#a0aec0";
             };
-            
             document.getElementById("loginBtn").onclick = () => {
-                const username = document.getElementById("loginUsername").value;
-                const password = document.getElementById("loginPassword").value;
-                
-                if (users[username] && users[username].password === password) {
-                    currentUser = username;
+                const user = document.getElementById("loginUsername").value;
+                const pass = document.getElementById("loginPassword").value;
+                if (users[user] && users[user].password === pass) {
+                    currentUser = user;
                     render();
-                } else {
-                    showError("Invalid username or password");
-                }
+                } else showError("Invalid login");
             };
-            
             document.getElementById("registerBtn").onclick = () => {
-                const username = document.getElementById("regUsername").value;
-                const password = document.getElementById("regPassword").value;
+                const user = document.getElementById("regUsername").value;
+                const pass = document.getElementById("regPassword").value;
                 const confirm = document.getElementById("regConfirm").value;
                 const role = document.getElementById("regRole").value;
-                
-                if (!username || !password) {
-                    showError("Please fill all fields");
-                } else if (password !== confirm) {
-                    showError("Passwords don't match");
-                } else if (users[username]) {
-                    showError("Username already exists");
-                } else {
-                    users[username] = { password: password, role: role };
-                    saveData();
-                    showSuccess("Account created! Please login.");
-                    document.getElementById("loginTabBtn").click();
-                }
+                if (!user || !pass) showError("Fill all fields");
+                else if (pass !== confirm) showError("Passwords don't match");
+[13/06/2026 12:16 pm] Kingsford Okyere: else if (users[user]) showError("Username exists");
+                else { users[user] = { password: pass, role: role }; saveData(); showSuccess("Account created! Login."); document.getElementById("loginTabBtn").click(); }
             };
         }
         
         function renderHome(container) {
+            const role = users[currentUser]?.role;
             container.innerHTML = `
                 <div class="card">
-                    <h1>🏠 Welcome, ${currentUser}!</h1>
+                    <h1>🇬🇭 Welcome, ${currentUser}!</h1>
+                    <p>Role: ${role === 'admin' ? '👑 Admin' : role === 'student' ? '🎓 Student' : role === 'parent' ? '👨‍👩‍👧 Parent' : role === 'teacher' ? '👨‍🏫 Teacher' : '🌾 Farmer'}</p>
                     <hr>
-                    <div class="grid-2">
-                        <button id="schoolBtn" class="btn-school">🏫 School Portal</button>
+                    ${role === 'student' ? <button id="studentBtn" class="btn-student">🎓 Student Portal</button> : ''}
+                    ${role === 'parent' ? <button id="parentBtn" class="btn-parent">👨‍👩‍👧 Parent Portal</button> : ''}
+                    ${role === 'teacher' ? <button id="schoolBtn" class="btn-school">🏫 Teacher Portal</button> : ''}
+                    ${role === 'farmer' ? <button id="farmersBtn" class="btn-farmers">🌾 Farmers Portal</button> : ''}
+                    ${role === 'admin' ? `
+                        <button id="studentBtn" class="btn-student">🎓 Student Portal</button>
+                        <button id="parentBtn" class="btn-parent">👨‍👩‍👧 Parent Portal</button>
+                        <button id="schoolBtn" class="btn-school">🏫 Teacher Portal</button>
                         <button id="farmersBtn" class="btn-farmers">🌾 Farmers Portal</button>
-                    </div>
+                        <button id="editBtn" class="btn-edit">✏️ Admin Edit</button>
+                    ` : ''}
                     <button id="logoutBtn" class="btn-logout">Logout</button>
                 </div>
             `;
-            
-            document.getElementById("schoolBtn").onclick = () => {
-                currentPortal = "school";
-                render();
-            };
-            
-            document.getElementById("farmersBtn").onclick = () => {
-                currentPortal = "farmers";
-                render();
-            };
-            
-            document.getElementById("logoutBtn").onclick = () => {
-                currentUser = null;
-                currentPortal = null;
-                render();
-            };
+            if (document.getElementById("studentBtn")) document.getElementById("studentBtn").onclick = () => { currentPortal = "student"; render(); };
+            if (document.getElementById("parentBtn")) document.getElementById("parentBtn").onclick = () => { currentPortal = "parent"; render(); };
+            if (document.getElementById("schoolBtn")) document.getElementById("schoolBtn").onclick = () => { currentPortal = "school"; render(); };
+            if (document.getElementById("farmersBtn")) document.getElementById("farmersBtn").onclick = () => { currentPortal = "farmers"; render(); };
+            if (document.getElementById("editBtn")) document.getElementById("editBtn").onclick = () => { editMode = !editMode; showSuccess(editMode ? "Edit ON" : "Edit OFF"); };
+            document.getElementById("logoutBtn").onclick = () => { currentUser = null; currentPortal = null; render(); };
         }
         
-        function renderSchool(container) {
-            container.innerHTML = `
-                <div class="card">
-                    <h1>🏫 School Portal</h1>
-                    <hr>
-                    <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-                        <button id="dashBtn" style="flex:1; background:#667eea; margin:0">Dashboard</button>
-                        <button id="studentsBtn" style="flex:1; background:#48bb78; margin:0">Students</button>
-                        <button id="examsBtn" style="flex:1; background:#ed8936; margin:0">Exams</button>
-                    </div>
-                    <div id="schoolContent"></div>
-                    <button id="backBtn" class="btn-back">← Back</button>
-                </div>
-            `;
-            
-            let currentTab = "dashboard";
-            
-            function updateContent() {
-                const content = document.getElementById("schoolContent");
-                if (currentTab === "dashboard") {
-                    content.innerHTML = `
-                        <div class="grid-2">
-                            <div class="metric-card"><div class="metric-value">1,245</div><div class="metric-label">Students</div></div>
-                            <div class="metric-card"><div class="metric-value">78</div><div class="metric-label">Teachers</div></div>
-                            <div class="metric-card"><div class="metric-value">87%</div><div class="metric-label">Pass Rate</div></div>
-                            <div class="metric-card"><div class="metric-value">94%</div><div class="metric-label">Attendance</div></div>
-                        </div>
-                        <div class="info">📊 Attendance: 94% this month</div>
-                    `;
-                } else if (currentTab === "students") {
-                    content.innerHTML = `
-                        <table>
-                            <tr><th>Name</th><th>Class</th><th>Contact</th></tr><tr><td>Alice Johnson</td><td>Grade 5</td><td>+123456789</td></tr>
-                            <tr><td>Bob Smith</td><td>Grade 4</td><td>+123456788</td></tr>
-                            <tr><td>Charlie Brown</td><td>Grade 5</td><td>+123456787</td></tr>
-                            <tr><td>Diana Ross</td><td>Grade 3</td><td>+123456786</td></tr>
-                        </table>
-                        <button id="downloadStudents" style="background:#48bb78;">📎 Download CSV</button>
-                    `;
-                    const downloadBtn = document.getElementById("downloadStudents");
-                    if (downloadBtn) {
-                        downloadBtn.onclick = () => downloadCSV("students.csv", "Name,Class,Contact\nAlice Johnson,Grade 5,+123456789\nBob Smith,Grade 4,+123456788\nCharlie Brown,Grade 5,+123456787\nDiana Ross,Grade 3,+123456786");
-                    }
-                } else if (currentTab === "exams") {
-                    content.innerHTML = `
-                        <table>
-                            <tr><th>Student</th><th>Math</th><th>Science</th><th>English</th></tr>
-                            <tr><td>Alice</td><td>92</td><td>89</td><td>95</td></tr>
-                            <tr><td>Bob</td><td>78</td><td>85</td><td>80</td></tr>
-                            <tr><td>Charlie</td><td>88</td><td>91</td><td>87</td></tr>
-                            <tr><td>Diana</td><td>95</td><td>88</td><td>92</td></tr>
-                        </table>
-                        <div class="info">📈 Class Average: Math 88%, Science 88%, English 89%</div>
-                    `;
+        function renderStudentPortal(container) {
+            const student = students.find(s => s.id === users[currentUser]?.studentId  s.name === currentUser)  students[0];
+            let tab = "dashboard";
+            function update() {
+                const content = document.getElementById("studentContent");
+                if (!content) return;
+                if (tab === "dashboard") {
+                    content.innerHTML = <div class="grid-2"><div class="metric-card"><div class="metric-value">GHS ${student.fees}</div><div class="metric-label">Fees</div></div><div class="metric-card"><div class="metric-value">${student.paid ? '✅ Paid' : '❌ Pending'}</div><div class="metric-label">Status</div></div></div><div class="info">Welcome ${student.name}! Register courses, check results, pay fees.</div>;
+                } else if (tab === "fees") {
+                    content.innerHTML = <h3>💰 Pay Fees - GHS ${student.fees}</h3><select id="bank">${ghanaBanks.map(b => `<option>${b}</option>`).join('')}</select><input id="ref" placeholder="Reference Number"><button id="pay">Confirm Payment</button><div class="warning">Momo: ${MOMO_NUMBER}</div>;
+                    document.getElementById("pay").onclick = () => { if(document.getElementById("ref").value){ student.
+[13/06/2026 12:16 pm] Kingsford Okyere: paid=true; saveData(); showSuccess("Payment confirmed!"); update(); } };
+                } else if (tab === "results") {
+                    const res = studentResults[student.id] || {};
+                    content.innerHTML = <h3>📊 Results</h3><table>${Object.entries(res).map(([s,sc]) => `<tr><td>${s}</td><td>${sc}%</td></tr>`).join('')}</table><div class="success">Status: ${res.status || 'Pass'}</div>;
+                } else if (tab === "courses") {
+                    let reg = courseRegistrations.filter(c => c.studentId === student.id);
+                    content.innerHTML = <h3>📚 Register Courses</h3><div class="info">Registered: ${reg.map(c=>c.course).join(', ')||'None'}</div><select id="course">${availableCourses.map(c=>`<option>${c}</option>`).join('')}</select><button id="reg">Register</button>;
+                    document.getElementById("reg").onclick = () => { const c = document.getElementById("course").value; courseRegistrations.push({studentId:student.id, course:c}); saveData(); showSuccess(`Registered ${c}`); update(); };
+                } else if (tab === "assignments") {
+                    let myAssign = assignments.filter(a => a.studentId === student.id);
+                    content.innerHTML = <h3>📝 Upload Assignment</h3><input id="title" placeholder="Title"><select id="course"><option>Mathematics</option><option>English</option><option>Science</option></select><textarea id="desc" rows="3" placeholder="Content"></textarea><button id="upload">Upload</button><h3>My Assignments</h3>${myAssign.map(a=>`<div class="assignment-card"><strong>${a.title}</strong> - ${a.course}<br>Status: ${a.graded ? '✅ Graded' : 'Pending'}</div>`).join('')};
+                    document.getElementById("upload").onclick = () => { const title=document.getElementById("title").value, course=document.getElementById("course").value, desc=document.getElementById("desc").value; if(title){ assignments.push({studentId:student.id, title, course, desc, graded:false}); saveData(); showSuccess("Uploaded!"); update(); } };
+                } else if (tab === "past") {
+                    content.innerHTML = <h3>📖 Past Questions</h3><select id="level"><option>Primary</option><option>JHS</option><option>SHS</option><option>University</option></select><input id="subj" placeholder="Subject"><button id="search">Search</button><div id="pqResults"></div>;
+                    document.getElementById("search").onclick = () => {
+                        const level = document.getElementById("level").value;
+                        const subj = document.getElementById("subj").value.toLowerCase();
+                        const results = pastQuestions.filter(p => p.level === level && p.subject.toLowerCase().includes(subj));
+                        document.getElementById("pqResults").innerHTML = results.map(p => `<div class="course-card"><strong>${p.subject}</strong> (${p.year})<br>${p.question}<br><em>Answer: ${p.answer}</em></div>`).join('') || '<div class="info">No results</div>';
+                    };
                 }
             }
-            
-            document.getElementById("dashBtn").onclick = () => { currentTab = "dashboard"; updateContent(); };
-            document.getElementById("studentsBtn").onclick = () => { currentTab = "students"; updateContent(); };
-            document.getElementById("examsBtn").onclick = () => { currentTab = "exams"; updateContent(); };
-            document.getElementById("backBtn").onclick = () => { currentPortal = null; render(); };
-            
-            updateContent();
+            container.innerHTML = <div class="card"><h1>🎓 Student Portal - ${student.name}</h1><div style="display:flex; gap:5px; flex-wrap:wrap"><button id="dash" style="flex:1">Dashboard</button><button id="fees" style="flex:1; background:#48bb78">Pay Fees</button><button id="results" style="flex:1; background:#38b2ac">Results</button><button id="courses" style="flex:1; background:#9f7aea">Courses</button><button id="assign" style="flex:1; background:#ed8936">Assignments</button><button id="past" style="flex:1; background:#e53e3e">Past Qs</button></div><div id="studentContent"></div><button id="back" class="btn-back">Back</button></div>;
+            document.getElementById("dash").onclick = () => { tab = "dashboard"; update(); };
+            document.getElementById("fees").onclick = () => { tab = "fees"; update(); };
+            document.getElementById("results").onclick = () => { tab = "results"; update(); };
+            document.getElementById("courses").onclick = () => { tab = "courses"; update(); };
+[13/06/2026 12:16 pm] Kingsford Okyere: document.getElementById("assign").onclick = () => { tab = "assignments"; update(); };
+            document.getElementById("past").onclick = () => { tab = "past"; update(); };
+            document.getElementById("back").onclick = () => { currentPortal = null; render(); };
+            update();
         }
         
-        function renderFarmers(container) {
-            container.innerHTML = `
-                <div class="card">
-                    <h1>🌾 Farmers Portal</h1>
-                    <hr>
-                    <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-                        <button id="dashBtn" style="flex:1; background:#667eea; margin:0">Dashboard</button>
-                        <button id="cropsBtn" style="flex:1; background:#48bb78; margin:0">Crops</button>
-                        <button id="pricesBtn" style="flex:1; background:#ed8936; margin:0">Prices</button>
-                    </div>
-                    <div id="farmersContent"></div>
-                    <button id="backBtn" class="btn-back">← Back</button>
-                </div>
-            `;
-            
-            let currentTab = "dashboard";
-            
-            function updateContent() {
+        function renderParentPortal(container) {
+            const ward = parentWards.find(w => w.parentName.toLowerCase() === currentUser.toLowerCase()) || parentWards[0];
+            const child = students.find(s => s.id === ward?.childId);
+            container.innerHTML = <div class="card"><h1>👨‍👩‍👧 Parent Portal</h1><div class="info">Child: ${ward?.childName || 'Not linked'} | Level: ${ward?.level || 'N/A'}</div><h3>📊 Results</h3><table>${Object.entries(studentResults[ward?.childId] || {}).map(([s,sc]) => `<tr><td>${s}</td><td>${sc}%</td></tr>`).join('')}</table><div class="success">Fees: ${child?.paid ? '✅ Paid' : '❌ Pending'}</div><button id="back" class="btn-back">Back</button></div>;
+            document.getElementById("back").onclick = () => { currentPortal = null; render(); };
+        }
+        
+        function renderSchoolPortal(container) {
+            container.innerHTML = <div class="card"><h1>🏫 Teacher Portal</h1><div class="info">📚 Teaching Resources | WAEC Materials | Lesson Plans</div><button id="back" class="btn-back">Back</button></div>;
+            document.getElementById("back").onclick = () => { currentPortal = null; render(); };
+        }
+        
+        function renderFarmersPortal(container) {
+            let tab = "dashboard";
+            function update() {
                 const content = document.getElementById("farmersContent");
-                if (currentTab === "dashboard") {
-                    content.innerHTML = `
-                        <div class="grid-2">
-                            <div class="metric-card"><div class="metric-value">5</div><div class="metric-label">Active Crops</div></div>
-                            <div class="metric-card"><div class="metric-value">12,450kg</div><div class="metric-label">Total Yield</div></div>
-                            <div class="metric-card"><div class="metric-value">$2.50</div><div class="metric-label">Avg Price/kg</div></div>
-                            <div class="metric-card"><div class="metric-value">$31k</div><div class="metric-label">Revenue</div></div>
-                        </div>
-                        <div class="info">🌱 This week's yield: 2,640 kg</div>
-                    `;
-                } else if (currentTab === "crops") {
-                    content.innerHTML = `
-                        <table><tr><th>Crop</th><th>Area (acres)</th><th>Status</th></tr>
-                            <tr><td>Maize</td><td>120</td><td>🌱 Growing</td></tr>
-                            <tr><td>Wheat</td><td>85</td><td>🌱 Growing</td></tr>
-                            <tr><td>Rice</td><td>95</td><td>🌱 Growing</td></tr>
-                            <tr><td>Tomatoes</td><td>40</td><td>🌻 Ready</td></tr>
-                        </table>
-                        <button id="downloadCrops" style="background:#48bb78;">📎 Download CSV</button>
-                    `;
-                    const downloadBtn = document.getElementById("downloadCrops");
-                    if (downloadBtn) {
-                        downloadBtn.onclick = () => downloadCSV("crops.csv", "Crop,Area,Status\nMaize,120,Growing\nWheat,85,Growing\nRice,95,Growing\nTomatoes,40,Ready");
-                    }
-                } else if (currentTab === "prices") {
-                    content.innerHTML = `
-                        <table>
-                            <tr><th>Crop</th><th>Price/kg</th><th>Trend</th></tr>
-                            <tr><td>Maize</td><td>$2.80</td><td>📈 +5%</td></tr>
-                            <tr><td>Wheat</td><td>$3.20</td><td>📈 +2%</td></tr>
-                            <tr><td>Rice</td><td>$4.50</td><td>📉 -3%</td></tr>
-                            <tr><td>Tomatoes</td><td>$1.80</td><td>📈 +8%</td></tr>
-                        </table>
-                        <div class="info">💰 Best price today: Rice at $4.50/kg</div>
-                    `;
+                if (!content) return;
+                if (tab === "dashboard") content.innerHTML = <div class="info">🌾 Welcome Farmers! Check crop prices and weather.</div>;
+                else if (tab === "prices") content.innerHTML = <h3>💰 Crop Prices</h3>${ghanaCrops.map(c => `<div class="crop-card"><strong>${c.name}</strong> - GHS ${c.pricePerKg}/kg<br>📍 ${c.region}</div>`).join('')};
+                else if (tab === "weather") content.innerHTML = <h3>🌤 Weather</h3>${Object.entries(ghanaWeather).map(([r,w]) => `<div class="crop-card"><strong>${r}</strong>: ${w}</div>`).join('')};
+                else if (tab === "mycrops") {
+                    let total = farmerCrops.reduce((s,c) => s + (c.weight * (ghanaCrops.find(g=>g.name===c.name)?.pricePerKg||0)),0);
+                    content.innerHTML = <h3>🌱 My Crops</h3>${farmerCrops.map(c => `<div class="crop-card"><strong>${c.name}</strong> - ${c.weight}kg - GHS ${(c.weight * (ghanaCrops.find(g=>g.name===c.name)?.pricePerKg||0)).toFixed(2)}</div>`).join('')}<div class="success">Total Value: GHS ${total.toFixed(2)}</div><div class="edit-form"><select id="cropName">${ghanaCrops.map(c=>`<option>${c.name}</option>`).join('')}</select><input id="weight" type="number" placeholder="Weight (kg)"><button id="add">Add Crop</button></div>;
+                    document.getElementById("add").onclick = () => { const name=document.getElementById("cropName").value, weight=parseFloat(document.getElementById("weight").value); if(name&&weight){ farmerCrops.push({name,weight}); saveData(); showSuccess("Crop added!"); update(); } };
                 }
             }
-            
-            document.getElementById("dashBtn").onclick = () => { currentTab = "dashboard"; updateContent(); };
-            document.getElementById("cropsBtn").onclick = () => { currentTab = "crops"; updateContent(); };
-            document.getElementById("pricesBtn").onclick = () => { currentTab = "prices"; updateContent(); };
-            document.getElementById("backBtn").onclick = () => { currentPortal = null; render(); };
-            
-            updateContent();
+            container.innerHTML = <div class="card"><h1>🌾 Farmers Portal</h1><div style="display:flex; gap:5px"><button id="dash" style="flex:1">Dashboard</button><button id="prices" style="flex:1; background:#48bb78">Prices</button><button id="weather" style="flex:1; background:#38b2ac">Weather</button><button id="mycrops" style="flex:1; background:#ed8936">My Crops</button></div><div id="farmersContent"></div><button id="back" class="btn-back">Back</button></div>;
+            document.getElementById("dash").onclick = () => { tab = "dashboard"; update(); };
+            document.getElementById("prices").onclick = () => { tab = "prices"; update(); };
+            document.getElementById("weather").
+[13/06/2026 12:16 pm] Kingsford Okyere: onclick = () => { tab = "weather"; update(); };
+            document.getElementById("mycrops").onclick = () => { tab = "mycrops"; update(); };
+            document.getElementById("back").onclick = () => { currentPortal = null; render(); };
+            update();
         }
         
-        function showError(msg) {
-            const app = document.getElementById("app");
-            const errorDiv = document.createElement("div");
-            errorDiv.className = "error";
-            errorDiv.innerHTML = msg;
-            app.insertBefore(errorDiv, app.firstChild);
-            setTimeout(() => errorDiv.remove(), 3000);
-        }
+        function renderAccessDenied(container) { container.innerHTML = <div class="card"><h1>⛔️ Access Denied</h1><button id="back" class="btn-back">Back</button></div>; document.getElementById("back").onclick = () => { currentPortal = null; render(); }; }
+        function showError(msg) { const d = document.createElement("div"); d.className = "error"; d.innerHTML = msg; document.getElementById("app").insertBefore(d, document.getElementById("app").firstChild); setTimeout(() => d.remove(), 3000); }
+        function showSuccess(msg) { const d = document.createElement("div"); d.className = "success"; d.innerHTML = msg; document.getElementById("app").insertBefore(d, document.getElementById("app").firstChild); setTimeout(() => d.remove(), 3000); }
         
-        function showSuccess(msg) {
-            const app = document.getElementById("app");
-            const successDiv = document.createElement("div");
-            successDiv.className = "success";
-            successDiv.innerHTML = msg;
-            app.insertBefore(successDiv, app.firstChild);
-            setTimeout(() => successDiv.remove(), 3000);
-        }
-        
-        function downloadCSV(filename, data) {
-            const blob = new Blob([data], { type: "text/csv" });
-            const link = document.createElement("a");
-            link.href = URL.createObjectURL(blob);
-            link.download = filename;
-            link.click();
-            URL.revokeObjectURL(link.href);
-        }
-        
-        // Initialize
         loadData();
+        initChat();
+        if (!users["kingsford"]) users["kingsford"] = { password: "Kingsford@97", role: "admin" };
         render();
     </script>
 </body>
